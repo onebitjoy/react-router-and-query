@@ -1,0 +1,10 @@
+@import "tailwindcss";
+#root {
+  width: 100dvw;
+  height: 100dvh;
+  min-height: fit-content;
+  background: #171819;
+  color: white;
+  font-weight: 600;
+  font-family: Inter, sans-serif;
+}
