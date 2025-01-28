@@ -31,7 +31,6 @@ export default function IndexPage() {
     placeholderData: keepPreviousData,
   });
 
-  console.log(data);
   const todos: Todo[] = data || ([] as Todo[]);
 
   if (isLoading)
@@ -39,6 +38,14 @@ export default function IndexPage() {
       <div className="flex justify-center items-center text-4xl mt-40">
         loading...
       </div>
+    );
+
+  // if the table ends
+  if (todos?.length === 0)
+    return (
+      <h1 className="text-6xl bold text-center mt-16 text-red-400">
+        The Table ended!
+      </h1>
     );
   return (
     <div>
@@ -58,7 +65,7 @@ export default function IndexPage() {
           </button>
         </div>
 
-        <table className="w-max border-collapse mt-10">
+        <table className="border-collapse mt-10">
           <thead>
             <tr>
               <th className="p-2 border border-amber-50 ">Completed</th>
@@ -82,16 +89,24 @@ export default function IndexPage() {
               }: Todo) => {
                 return (
                   <tr key={id}>
-                    <td className="p-2 border border-amber-50 ">
+                    <td className="p-2 text-balance border border-amber-50 ">
                       {completed.toString()}
                     </td>
-                    <td className="p-2 border border-amber-50 ">{dueDate}</td>
-                    <td className="p-2 border border-amber-50 ">{id}</td>
-                    <td className="p-2 border border-amber-50 ">{title}</td>
-                    <td className="p-2 border border-amber-50 ">
+                    <td className="p-2 text-balance border border-amber-50 ">
+                      {dueDate}
+                    </td>
+                    <td className="p-2 text-balance border border-amber-50 ">
+                      {id}
+                    </td>
+                    <td className="p-2 text-balance border border-amber-50 ">
+                      {title}
+                    </td>
+                    <td className="p-2 text-balance border border-amber-50">
                       {description}
                     </td>
-                    <td className="p-2 border border-amber-50 ">{priority}</td>
+                    <td className="p-2 text-balance border border-amber-50 ">
+                      {priority}
+                    </td>
                   </tr>
                 );
               }
