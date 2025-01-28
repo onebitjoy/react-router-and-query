@@ -7,7 +7,7 @@ import {
   getFilterTodos,
   getLimitedTodos,
 } from "./dataImporter";
-import { parseBoolean, parsePriority } from "./parser";
+import { parseBoolean, parseNumber, parsePriority } from "./parser";
 
 const app = express();
 const port = 3000;
@@ -15,6 +15,13 @@ app.use(express.json());
 
 app.get("/todos", (req: Request, res: Response) => {
   const queries = req.query;
+  const { skip, limit } = queries;
+  console.log({ queries });
+  if (parseNumber(skip) && parseNumber(limit)) {
+    return res.send(
+      getTodos({ skip: parseNumber(skip), limit: parseNumber(limit) })
+    );
+  }
   const filters: Filters = {
     completed: parseBoolean(queries.completed as string),
     priority: parsePriority(queries.priority as string),
@@ -27,7 +34,7 @@ app.get("/todos", (req: Request, res: Response) => {
 
 app.get("/todos/:todoId", (req: Request, res: Response) => {
   const todoId: number = Number(req.params.todoId);
-  if (todoId > getTodos().length) {
+  if (todoId > getTodos({}).length) {
     return res.json({ todos: getSingleTodo(1) });
   }
   res.json({ todos: getSingleTodo(todoId) });

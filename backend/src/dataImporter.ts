@@ -21,12 +21,30 @@ export type Filters = {
 
 // Functions
 
-export function getTodos() {
-  return data.todos;
+export function getTodos({
+  skip,
+  limit,
+}: {
+  skip?: number | undefined;
+  limit?: number | undefined;
+}) {
+  console.log({ skip, limit });
+  const initialIndex: number = 0 + (skip !== undefined ? skip : 0);
+  let L = limit || 10;
+  if (limit === -1 || L > data.todos.length) {
+    L = data.todos.length - 1;
+  }
+  const finalIndex: number =
+    initialIndex + L > data.todos.length
+      ? data.todos.length - 1
+      : initialIndex + L;
+
+  console.log({ initialIndex, finalIndex });
+  return data.todos.slice(initialIndex, finalIndex);
 }
 
 export function getLimitedTodos(limit: number = 10) {
-  const todos = getTodos();
+  const todos = getTodos({ skip: 0, limit: 10 });
   if (limit > todos.length) {
     return todos;
   }
@@ -34,7 +52,9 @@ export function getLimitedTodos(limit: number = 10) {
 }
 
 export function getSingleTodo(todoId: number): Todo[] {
-  return getTodos().filter((todo: Todo) => todo.id === todoId);
+  return getTodos({ skip: 0, limit: -1 }).filter(
+    (todo: Todo) => todo.id === todoId
+  );
 }
 
 export function getFilterTodos(filters: Filters) {
@@ -42,10 +62,10 @@ export function getFilterTodos(filters: Filters) {
   console.log(filters);
 
   if (!filters) {
-    return getTodos();
+    return getTodos({});
   }
 
-  let todos = getTodos();
+  let todos = getTodos({});
   if (filters?.completed) {
     todos = todos.filter((todo: Todo) => {
       return todo.completed === filters.completed;

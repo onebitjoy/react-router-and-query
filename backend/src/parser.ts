@@ -23,3 +23,7 @@ export const parsePriority = (
     ? "Low"
     : undefined;
 };
+
+export function parseNumber(value: any) {
+  return Number(value);
+}

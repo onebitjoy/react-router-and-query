@@ -4,9 +4,11 @@ import { useState } from "react";
 
 export interface Todo {
   id: number;
+  title: string;
+  description: string;
   completed: boolean;
-  todo: string;
-  userId: number;
+  priority: "High" | "Medium" | "Low";
+  dueDate: string;
 }
 
 export default function IndexPage() {
@@ -29,8 +31,8 @@ export default function IndexPage() {
     placeholderData: keepPreviousData,
   });
 
-  console.log(data?.todos);
-  const todos: Todo[] = data?.todos || ([] as Todo[]);
+  console.log(data);
+  const todos: Todo[] = data || ([] as Todo[]);
 
   if (isLoading)
     return (
@@ -59,26 +61,41 @@ export default function IndexPage() {
         <table className="w-max border-collapse mt-10">
           <thead>
             <tr>
-              <th className="p-2 border border-amber-50 ">ID</th>
-              <th className="p-2 border border-amber-50 ">Todo</th>
               <th className="p-2 border border-amber-50 ">Completed</th>
-              <th className="p-2 border border-amber-50 ">User ID</th>
+              <th className="p-2 border border-amber-50 ">Due Date</th>
+              <th className="p-2 border border-amber-50 ">ID</th>
+              <th className="p-2 border border-amber-50 ">Title</th>
+              <th className="p-2 border border-amber-50 ">Description</th>
+              <th className="p-2 border border-amber-50 ">Priority</th>
             </tr>
           </thead>
 
           <tbody>
-            {todos.map(({ id, completed, todo, userId }: Todo) => {
-              return (
-                <tr key={id}>
-                  <td className="p-2 border border-amber-50 ">{id}</td>
-                  <td className="p-2 border border-amber-50 ">
-                    {completed.toString()}
-                  </td>
-                  <td className="p-2 border border-amber-50 ">{userId}</td>
-                  <td className="p-2 border border-amber-50 ">{todo}</td>
-                </tr>
-              );
-            })}
+            {todos.map(
+              ({
+                id,
+                title,
+                description,
+                completed,
+                priority,
+                dueDate,
+              }: Todo) => {
+                return (
+                  <tr key={id}>
+                    <td className="p-2 border border-amber-50 ">
+                      {completed.toString()}
+                    </td>
+                    <td className="p-2 border border-amber-50 ">{dueDate}</td>
+                    <td className="p-2 border border-amber-50 ">{id}</td>
+                    <td className="p-2 border border-amber-50 ">{title}</td>
+                    <td className="p-2 border border-amber-50 ">
+                      {description}
+                    </td>
+                    <td className="p-2 border border-amber-50 ">{priority}</td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </table>
       </div>
